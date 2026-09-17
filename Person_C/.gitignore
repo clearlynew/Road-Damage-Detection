@@ -1,0 +1,14 @@
+cat > .gitignore << 'EOF'
+# stub/generated data — reproducible, don't commit
+hdfs_sim/
+scaling_results.csv
+
+# python
+__pycache__/
+*.pyc
+rdd_venv/
+.ipynb_checkpoints/
+
+# OS junk
+.DS_Store
+EOF
