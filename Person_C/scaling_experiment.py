@@ -1,21 +1,20 @@
 """
 Person 3's deliverable: scaling experiment (Sec 6 decision #5).
-Runs the embedding extraction job at 1, 2, 4, 8 partitions/cores, logs
-wall-clock time, throughput (img/s), and parallel efficiency, and writes
-a CSV you'll turn into the scaling curve plot for the report/demo.
+Runs the pipeline at 1, 2, 4, 8 partitions/cores, logs wall-clock time,
+throughput, and parallel efficiency, writes scaling_results.csv.
 
-This is fully wired against the stub pipeline right now. When Person 1 and
-Person 2's real deliverables land, you should NOT need to touch this file --
-only spark_pipeline.py's SWAP points change. Then just re-run this.
+v4 UPDATE: this currently targets the ABLATION track (spark_pipeline_ablation.py,
+frozen embeddings), because that runs standalone with no trained model needed.
+Once Person 1's real .pt lands and is in HDFS, switch the import below to
+`from spark_pipeline import run_inference as run` to scale-test the PRIMARY
+(fine-tuned) track instead -- same harness, just a different function.
 
 NOTE: on this small stub dataset (200 rows), don't expect real speedup --
-Spark overhead dominates at this scale. The parallel-efficiency numbers only
-become meaningful on the real ~37,000-image run (Sec 6 decision #5 explicitly
-says the full 5-country volume is what "makes the speedup visible, unlike on
-the India subset alone" -- same logic applies to this tiny stub set).
+Spark overhead dominates at this scale. Meaningful only on the real
+~37,000-image run (Sec 6 decision #5/#6).
 """
 import csv
-from spark_pipeline import run
+from spark_pipeline_ablation import run
 
 PARTITION_LEVELS = [1, 2, 4, 8]
 OUT_CSV = "scaling_results.csv"
